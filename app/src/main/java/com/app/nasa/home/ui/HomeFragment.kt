@@ -7,6 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import club.cred.synth.appearances.PitViewAppearance
+import club.cred.synth.drawables.PitDrawable
 import com.app.nasa.databinding.HomeFragmentBinding
 import com.app.nasa.home.HomeRepo
 import com.app.nasa.home.HomeVMF
@@ -27,6 +31,9 @@ class HomeFragment : Fragment() {
       HomeRepo(requireActivity().application)
     )
   }
+  private val adapter by lazy {
+    NasaAdapter()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -42,6 +49,11 @@ class HomeFragment : Fragment() {
     savedInstanceState: Bundle?
   ) {
     super.onViewCreated(view, savedInstanceState)
+    binding.rvHome.layoutManager = GridLayoutManager(context, 2)
+    binding.rvHome.adapter = adapter
+    viewModel.getAllImages().observe(viewLifecycleOwner, Observer {
+      adapter.swapData(it)
+    })
   }
 
   override fun onDestroyView() {
