@@ -13,13 +13,15 @@ import com.app.nasa.databinding.ItemNasaGridBinding
 import com.app.nasa.home.model.NasaDataModel
 import com.app.nasa.home.ui.NasaAdapter.ItemViewHolder
 
-class NasaAdapter : ListAdapter<NasaDataModel, ItemViewHolder>(DiffCallback()) {
+class NasaAdapter(private val onItemClicked: (Int) -> Unit) : ListAdapter<NasaDataModel, ItemViewHolder>(
+  DiffCallback()
+) {
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
   ): ItemViewHolder {
-    return ItemViewHolder(ItemNasaGridBinding.inflate(LayoutInflater.from(parent.context)))
+    return ItemViewHolder(ItemNasaGridBinding.inflate(LayoutInflater.from(parent.context)),onItemClicked)
   }
 
   override fun onBindViewHolder(
@@ -29,11 +31,16 @@ class NasaAdapter : ListAdapter<NasaDataModel, ItemViewHolder>(DiffCallback()) {
     holder.bind(getItem(position))
   }
 
-  class ItemViewHolder(private val binding: ItemNasaGridBinding) : RecyclerView.ViewHolder(
+  class ItemViewHolder(private val binding: ItemNasaGridBinding,onItemClicked: (Int) -> Unit) : RecyclerView.ViewHolder(
     binding.root
   ) {
+    init {
+      binding.root.setOnClickListener {
+        onItemClicked(adapterPosition)
+      }
+    }
     fun bind(item: NasaDataModel) = with(binding) {
-      binding.ivBanner.load(item.url){
+      binding.ivBanner.load(item.url) {
         placeholder(R.drawable.ic_placeholder)
         transformations(RoundedCornersTransformation(16f))
       }

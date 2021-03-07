@@ -1,6 +1,5 @@
 package com.app.nasa.home.ui
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import club.cred.synth.appearances.PitViewAppearance
-import club.cred.synth.drawables.PitDrawable
+import com.app.nasa.R
 import com.app.nasa.databinding.HomeFragmentBinding
 import com.app.nasa.home.HomeRepo
 import com.app.nasa.home.HomeVMF
@@ -31,8 +30,12 @@ class HomeFragment : Fragment() {
       HomeRepo(requireActivity().application)
     )
   }
+
   private val adapter by lazy {
-    NasaAdapter()
+    NasaAdapter { clickedPosition ->
+      viewModel.setCurrentImage(clickedPosition)
+      viewModel.onAdapterItemClicked()
+    }
   }
 
   override fun onCreateView(
@@ -53,6 +56,12 @@ class HomeFragment : Fragment() {
     binding.rvHome.adapter = adapter
     viewModel.getAllImages().observe(viewLifecycleOwner, Observer {
       adapter.swapData(it)
+    })
+    viewModel.navigateToImageDetail.observe(viewLifecycleOwner, Observer { navigate ->
+      if (navigate){
+        findNavController().navigate(R.id.action_homeFragment_to_imageDetailFragment)
+        viewModel.navigatedToImageDetailScreen()
+      }
     })
   }
 

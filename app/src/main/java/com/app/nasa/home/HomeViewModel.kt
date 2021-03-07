@@ -10,6 +10,14 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
 
   lateinit var images: MutableLiveData<List<NasaDataModel>>
 
+  private val _navigateToImageDetail = MutableLiveData<Boolean>()
+  val navigateToImageDetail
+    get() = _navigateToImageDetail
+
+  private val _currentImage = MutableLiveData<Int>()
+  val currentImage
+    get() = _currentImage
+
   fun getAllImages(): LiveData<List<NasaDataModel>> {
     if (!::images.isInitialized) {
       images = MutableLiveData()
@@ -17,5 +25,17 @@ class HomeViewModel(private val repo: HomeRepo) : ViewModel() {
       images.value = Klaxon().parseArray(data) ?: emptyList()
     }
     return images
+  }
+
+  fun setCurrentImage(clickedPosition: Int) {
+    currentImage.value = clickedPosition
+  }
+
+  fun onAdapterItemClicked() {
+    _navigateToImageDetail.value = true
+  }
+
+  fun navigatedToImageDetailScreen() {
+    _navigateToImageDetail.value = false
   }
 }
