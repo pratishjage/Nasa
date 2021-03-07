@@ -1,7 +1,10 @@
 package com.app.nasa.home.model
 
+import android.os.Parcelable
 import com.beust.klaxon.Json
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class NasaDataModel(
   @Json(name = "copyright")
   val copyright: String? = null,
@@ -19,4 +22,4 @@ data class NasaDataModel(
   val title: String?,
   @Json(name = "url")
   val url: String?
-)
+):Parcelable
