@@ -1,14 +1,12 @@
 package com.app.nasa.home.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import club.cred.synth.drawables.PitDrawable
 import coil.load
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.app.nasa.R
 import com.app.nasa.databinding.ItemNasaGridBinding
