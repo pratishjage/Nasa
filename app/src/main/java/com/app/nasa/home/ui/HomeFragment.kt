@@ -1,4 +1,4 @@
-package com.app.nasa.imagedetail
+package com.app.nasa.home.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,22 +8,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.app.nasa.R
-import com.app.nasa.databinding.FragmentImageDetailBinding
 import com.app.nasa.databinding.HomeFragmentBinding
 import com.app.nasa.home.HomeRepo
 import com.app.nasa.home.HomeVMF
 import com.app.nasa.home.HomeViewModel
-import com.app.nasa.imagedetail.adapter.ImageDetailAdapter
 
-class ImageDetailFragment : Fragment() {
-  private var _binding: FragmentImageDetailBinding? = null
+class HomeFragment : Fragment() {
+
+  private var _binding: HomeFragmentBinding? = null
 
   private val binding get() = _binding!!
 
   companion object {
-    fun newInstance() =
-      ImageDetailFragment()
+    fun newInstance() = HomeFragment()
   }
 
   private val viewModel by activityViewModels<HomeViewModel> {
@@ -32,14 +31,19 @@ class ImageDetailFragment : Fragment() {
     )
   }
 
-  private lateinit var adapter: ImageDetailAdapter
+  private val adapter by lazy {
+    NasaAdapter { clickedPosition ->
+      viewModel.setCurrentImage(clickedPosition)
+      viewModel.onAdapterItemClicked()
+    }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    _binding = FragmentImageDetailBinding.inflate(inflater, container, false)
+    _binding = HomeFragmentBinding.inflate(inflater, container, false)
     return this.binding.root
   }
 
@@ -48,15 +52,21 @@ class ImageDetailFragment : Fragment() {
     savedInstanceState: Bundle?
   ) {
     super.onViewCreated(view, savedInstanceState)
+    binding.rvHome.layoutManager = GridLayoutManager(context, 2)
+    binding.rvHome.adapter = adapter
     viewModel.getAllImages().observe(viewLifecycleOwner, Observer {
-      adapter = ImageDetailAdapter(this, it)
-      binding.vp.adapter = adapter
+      adapter.swapData(it)
     })
-    viewModel.currentImage.observe(viewLifecycleOwner, Observer {
-      if (binding.vp.adapter != null) {
-        binding.vp.setCurrentItem(it, false)
+    viewModel.navigateToImageDetail.observe(viewLifecycleOwner, Observer { navigate ->
+      if (navigate){
+        findNavController().navigate(R.id.action_homeFragment_to_imageDetailFragment)
+        viewModel.navigatedToImageDetailScreen()
       }
     })
-    binding.btnBack.setOnClickListener { findNavController().popBackStack() }
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
   }
 }
