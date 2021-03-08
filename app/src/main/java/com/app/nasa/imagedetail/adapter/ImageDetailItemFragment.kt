@@ -59,7 +59,7 @@ class ImageDetailItemFragment : Fragment() {
       }
       binding.flDescription.background = PitDrawable()
       binding.tvDescription.text = data.explanation
-      binding.tvImageTitle.text = data.title
+      binding.tvTitle.text = data.title
     }
   }
 

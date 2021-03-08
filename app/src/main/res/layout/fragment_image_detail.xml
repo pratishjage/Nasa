@@ -6,15 +6,16 @@
   android:layout_height="match_parent"
   tools:context=".imagedetail.ImageDetailFragment">
 
-  <club.cred.synth.views.SynthImageButton
-    android:id="@+id/synthImageButton"
+  <ImageView
+    android:id="@+id/btnBack"
     android:layout_width="40dp"
     android:layout_height="40dp"
     android:layout_marginStart="16dp"
     android:layout_marginTop="16dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/ic_back" />
+    app:srcCompat="@drawable/ic_back"
+    />
 
   <androidx.viewpager2.widget.ViewPager2
     android:id="@+id/vp"
@@ -25,5 +26,5 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/synthImageButton" />
+    app:layout_constraintTop_toBottomOf="@+id/btnBack" />
 </androidx.constraintlayout.widget.ConstraintLayout>

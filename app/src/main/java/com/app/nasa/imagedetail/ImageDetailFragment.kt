@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.app.nasa.R
 import com.app.nasa.databinding.FragmentImageDetailBinding
 import com.app.nasa.databinding.HomeFragmentBinding
@@ -56,5 +57,6 @@ class ImageDetailFragment : Fragment() {
         binding.vp.setCurrentItem(it, false)
       }
     })
+    binding.btnBack.setOnClickListener { findNavController().popBackStack() }
   }
 }

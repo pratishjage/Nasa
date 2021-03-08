@@ -10,5 +10,6 @@
   <color name="dark_grey">#212426</color>
   <color name="copper_text_color">#f9d3b4</color>
   <color name="copper_text_color_30">#33f9d3b4</color>
-  <color name="dark_copper">#a15e39</color>
+  <color name="dark_copper">#77533F</color>
+  <color name="grey">#929fa5</color>
 </resources>
